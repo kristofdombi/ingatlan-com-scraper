@@ -87,6 +87,16 @@ const areas = [45];
     await page.waitFor('.listing__card')
       .then(console.log('✅ Result page loaded.'));
 
+    const links = await page.evaluate(() => {
+      const anchors = document.querySelectorAll('.resultspage__listings .listing .listing__thumbnail');
+      const hrefs = Object.entries(anchors).reduce((array, anchor) => {
+        return array.concat(anchor[1].href);
+      }, []);
+      return hrefs;
+    });
+
+    console.log(`✅ ${links.length} result page link(s) acquired.`);
+
     await page.screenshot({
       path: 'screenshot.png',
       fullPage: true
