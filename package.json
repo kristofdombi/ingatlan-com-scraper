@@ -1,0 +1,26 @@
+{
+  "name": "ingatlan-com-scraper",
+  "version": "0.0.1",
+  "description": "scraper for ingatlan.com using puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kristof0425/ingatlan-com-scraper.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "scraper"
+  ],
+  "author": "Kristof Dombi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kristof0425/ingatlan-com-scraper/issues"
+  },
+  "homepage": "https://github.com/kristof0425/ingatlan-com-scraper#readme",
+  "dependencies": {
+    "puppeteer": "^0.12.0"
+  }
+}
