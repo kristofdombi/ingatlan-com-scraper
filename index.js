@@ -62,6 +62,12 @@ const areas = [45];
       inputElement.value = 45;
     }).then(console.log('✅ Typed in min area.'));
 
+    await page.click('#filter_slidedown_room_count')
+      .then(console.log('✅ Clicked on room counter.'));
+
+    // Check the source code of ignatlan.com for this.
+    await page.click('#filter_slidedown_room_count .dropdown ul li:nth-child(3)');
+
     await page.screenshot({ path: 'search-details.png' })
       .then(console.log('✅ Saving search details as a screenshot.'));
 
