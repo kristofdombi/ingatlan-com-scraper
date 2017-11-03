@@ -1,4 +1,5 @@
 const p = require('puppeteer');
+const each = require('promise-each');
 
 const searchedArea = 'Budapest XIII. kerület';
 const prices = [26, 32];
@@ -40,9 +41,6 @@ const areas = [45];
       inputElement.value = 25;
     }).then(console.log('✅ Typed in min price.'));
 
-    await page.screenshot({ path: 'search-details.png' })
-      .then(console.log('✅ Saving search details as a screenshot.'));
-
     await page.keyboard.press('Tab');
 
     await page.evaluate(() => {
@@ -68,8 +66,8 @@ const areas = [45];
     // Check the source code of ignatlan.com for this.
     await page.click('#filter_slidedown_room_count .dropdown ul li:nth-child(3)');
 
-    await page.screenshot({ path: 'search-details.png' })
-      .then(console.log('✅ Saving search details as a screenshot.'));
+    await page.screenshot({ path: 'screenshots/search-details.png' })
+      .then(console.log('📸 Saving search details as a screenshot.'));
 
     /*
       Hitting search
@@ -97,11 +95,20 @@ const areas = [45];
 
     console.log(`✅ ${links.length} result page link(s) acquired.`);
 
-    await page.screenshot({
-      path: 'screenshot.png',
-      fullPage: true
-    })
-      .then(console.log('✅ Saving as a screenshot.'));
+    console.log('➡️ Moving onto iteration phase.');
+
+    /*
+      Iteration on results
+    */
+
+    await Promise.resolve(links).then(each(async (link, i) => {
+      await page.goto(link);
+      await page.waitFor('span.parameter-value')
+        .then(console.log('🔎 Page loaded, now scraping.'));
+      await page.screenshot({ path: `screenshots/page-${i + 1}.png`, fullPage: true })
+        .then(console.log(`📸 Saving result of page ${i + 1} as a screenshot.`));
+    }));
+
   } catch (e) {
     console.error(`❌ ${e}`);
   }

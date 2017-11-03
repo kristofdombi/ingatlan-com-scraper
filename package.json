@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/kristof0425/ingatlan-com-scraper#readme",
   "dependencies": {
+    "promise-each": "^2.2.0",
     "puppeteer": "^0.12.0"
   }
 }
