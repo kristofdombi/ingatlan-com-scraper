@@ -1,5 +1,6 @@
 const p = require('puppeteer');
 const each = require('promise-each');
+const { mainPage, resultsPage, propertyPage } = require('./elements') ;
 
 const searchedArea = 'Budapest XIII. kerület';
 const prices = [26, 32];
@@ -25,48 +26,51 @@ const areas = [45];
       Setting the search details
     */
 
-    await page.type('input#sf_query', searchedArea, {delay: 300})
+    await page.type(mainPage.searchLocationInput, searchedArea, {delay: 300})
       .then(console.log(`   ✅ Typed in: ${searchedArea}`));
 
-    await page.click('.ui-menu-item')
+    await page.click(mainPage.autoSuggestLocationItem)
       .then(console.log('   ✅ Clicked on first autosuggestion.'));
 
-    await page.click('#filter_slidedown_price_type_sale_and_price_type_rent')
+    await page.click(mainPage.priceRanges)
       .then(async () => {
         console.log('   ✅ Clicked on price ranges.');
-        await page.focus('#sf_price_sale_min')
+        await page.focus(mainPage.priceRangeMin)
           .then(console.log('   ✅ Focused on min price range.'));
       });
 
-    await page.evaluate(() => {
-      const inputElement = document.getElementById('sf_price_sale_min');
-      inputElement.value = 25;
-    }).then(console.log('   ✅ Typed in min price.'));
+    const priceMin = 25;
+    const { priceRangeMin } = mainPage;
+    await page.evaluate((mainPage, priceMin) => {
+      const inputElement = document.querySelector(mainPage.priceRangeMin);
+      inputElement.value = priceMin;
+    }, mainPage, priceMin).then(console.log('   ✅ Typed in min price.'));
 
     await page.keyboard.press('Tab');
 
-    await page.evaluate(() => {
-      const inputElement = document.getElementById('sf_price_sale_max');
-      inputElement.value = 32;
-    }).then(console.log('   ✅ Typed in max price.'));
+    const priceMax = 32;
+    await page.evaluate((mainPage, priceMax) => {
+      const inputElement = document.querySelector(mainPage.priceRangeMax);
+      inputElement.value = priceMax;
+    }, mainPage, priceMax).then(console.log('   ✅ Typed in max price.'));
 
-    await page.click('#filter_slidedown_area_size')
+    await page.click(mainPage.squaremeterRanges)
       .then(async () => {
         console.log('   ✅ Clicked on size ranges.');
-        await page.focus('#sf_area_size_min')
+        await page.focus(mainPage.squaremeterRangeMin)
           .then(console.log('   ✅ Focused on min size range.'));
       });
 
-    await page.evaluate(() => {
-      const inputElement = document.getElementById('sf_area_size_min');
-      inputElement.value = 45;
-    }).then(console.log('   ✅ Typed in min area.'));
+    const squaremeterMin = 45;
+    await page.evaluate((mainPage ,squaremeterMin) => {
+      const inputElement = document.querySelector(mainPage.squaremeterRangeMin);
+      inputElement.value = squaremeterMin;
+    }, mainPage, squaremeterMin).then(console.log('   ✅ Typed in min area.'));
 
-    await page.click('#filter_slidedown_room_count')
+    await page.click(mainPage.roomCounter)
       .then(console.log('   ✅ Clicked on room counter.'));
 
-    // Check the source code of ignatlan.com for this.
-    await page.click('#filter_slidedown_room_count .dropdown ul li:nth-child(3)');
+    await page.click(mainPage.twoPlusRoomsOption);
 
     await page.screenshot({ path: 'screenshots/search-details.png' })
       .then(console.log('   📸 Saving search details as a screenshot.'));
@@ -75,7 +79,7 @@ const areas = [45];
       Hitting search
     */
 
-    await page.click('.search-button')
+    await page.click(mainPage.searchButton)
       .then(console.log('   ✅ Clicked on search button.'));
 
     console.log('➡️ Moving onto the results page.');
@@ -84,16 +88,16 @@ const areas = [45];
       Arriving to results page
     */
 
-    await page.waitFor('.listing__card')
+    await page.waitFor(resultsPage.listWrapper)
       .then(console.log('   ✅ Result page loaded.'));
 
-    const links = await page.evaluate(() => {
-      const anchors = document.querySelectorAll('.resultspage__listings .listing .listing__thumbnail');
+    const links = await page.evaluate((resultsPage) => {
+      const anchors = document.querySelectorAll(resultsPage.resultThumbnailAnchor);
       const hrefs = Object.entries(anchors).reduce((array, anchor) => {
         return array.concat(anchor[1].href);
       }, []);
       return hrefs;
-    });
+    }, resultsPage);
 
     console.log(`   ✅ ${links.length} result page link(s) acquired.`);
 
@@ -105,7 +109,7 @@ const areas = [45];
 
     await Promise.resolve(links).then(each(async (link, i) => {
       await page.goto(link);
-      await page.waitFor('span.parameter-value')
+      await page.waitFor(propertyPage.propertyPrice)
         .then(console.log('   🔎 Page loaded, now scraping.'));
       await page.screenshot({ path: `screenshots/page-${i + 1}.png`, fullPage: true })
         .then(console.log(`   📸 Saving result of page ${i + 1} as a screenshot.`));
