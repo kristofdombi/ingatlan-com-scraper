@@ -2,9 +2,14 @@ const p = require('puppeteer');
 const each = require('promise-each');
 const { mainPage, resultsPage, propertyPage } = require('./elements') ;
 
+// Search data
+
 const searchedArea = 'Budapest XIII. kerület';
-const prices = [26, 32];
-const areas = [45];
+const priceMin = 25;
+const priceMax = 32;
+const squaremeterMin = 45;
+
+// Scraping
 
 (async () => {
 
@@ -39,7 +44,6 @@ const areas = [45];
           .then(console.log('   ✅ Focused on min price range.'));
       });
 
-    const priceMin = 25;
     const { priceRangeMin } = mainPage;
     await page.evaluate((mainPage, priceMin) => {
       const inputElement = document.querySelector(mainPage.priceRangeMin);
@@ -48,7 +52,6 @@ const areas = [45];
 
     await page.keyboard.press('Tab');
 
-    const priceMax = 32;
     await page.evaluate((mainPage, priceMax) => {
       const inputElement = document.querySelector(mainPage.priceRangeMax);
       inputElement.value = priceMax;
@@ -61,7 +64,6 @@ const areas = [45];
           .then(console.log('   ✅ Focused on min size range.'));
       });
 
-    const squaremeterMin = 45;
     await page.evaluate((mainPage ,squaremeterMin) => {
       const inputElement = document.querySelector(mainPage.squaremeterRangeMin);
       inputElement.value = squaremeterMin;
