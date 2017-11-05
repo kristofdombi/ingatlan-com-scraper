@@ -1,5 +1,6 @@
 const p = require('puppeteer');
 const each = require('promise-each');
+const notifier = require('node-notifier');
 
 const { mainPage, resultsPage, propertyPage } = require('./page-elements') ;
 const { searchedAreas } = require('./search-parameters');
@@ -18,6 +19,10 @@ const iterateOnLinks = require('./phases/result-iteration');
     page = await browser.newPage();
 
     console.log('Hello! 👋  I\'m starting right away.');
+    notifier.notify({
+      'title': '🏡 ingatlan.com 🤖',
+      'message': 'Hello! 👋  I\'m starting right away.'
+    });
 
     await page.goto('https://ingatlan.com')
       .then(console.log('✅ Found ingatlan.com'));
@@ -51,6 +56,11 @@ const iterateOnLinks = require('./phases/result-iteration');
     }));
 
     console.log(`🎉 I'm done. Bye. 👋`);
+    notifier.notify({
+      'title': '🏡 ingatlan.com 🤖',
+      'message': '🎉 I\'m done. Bye. 👋`'
+    });
+
 
   } catch (e) {
     console.error(`❌ ${e}`);
