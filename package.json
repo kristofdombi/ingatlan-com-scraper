@@ -23,5 +23,8 @@
   "dependencies": {
     "promise-each": "^2.2.0",
     "puppeteer": "^0.12.0"
+  },
+  "devDependencies": {
+    "slug": "^0.9.1"
   }
 }
