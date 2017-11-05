@@ -64,6 +64,10 @@ const iterateOnLinks = require('./phases/result-iteration');
 
   } catch (e) {
     console.error(`❌ ${e}`);
+    notifier.notify({
+      'title': '🏡 ingatlan.com 🤖',
+      'message': '❌ Something happened. Sorry!'
+    });
   }
 
   browser.close();
