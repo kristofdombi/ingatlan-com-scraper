@@ -16,8 +16,9 @@ module.exports = async function (page, propertyPage, links, area) {
     let dir = `screenshots/${slug(area)}`;
     if (!existsSync(dir)) {
       mkdirSync(dir);
-      console.log(`   🗂 Created folder screenshots/${slug(area)}`);
+      console.log(`   🗂 Created folder: screenshots/${slug(area)}`);
     }
+    await page.click(propertyPage.revealPhoneNumberButton);
     await page.screenshot({ path: `screenshots/${slug(area)}/page-${i + 1}.png`, fullPage: true })
       .then(console.log(`   📸 Saving result of page ${i + 1} as a screenshot.`));
   }));

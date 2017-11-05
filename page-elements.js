@@ -18,5 +18,6 @@ module.exports = {
   },
   propertyPage: {
     propertyPrice: 'span.parameter-value',
+    revealPhoneNumberButton: '.show-number',
   }
 }
