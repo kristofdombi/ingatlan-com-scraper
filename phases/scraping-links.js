@@ -7,10 +7,7 @@ module.exports = async function (page, resultsPage) {
     return span.innerText;
   }, resultsPage);
 
-  console.log(value);
-
   if (value === '0') {
-    console.log('here');
     const links = [];
     console.log(`   🤷‍ ${links.length} result page link(s) acquired.`);
     return links;
