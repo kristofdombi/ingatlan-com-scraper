@@ -2,7 +2,7 @@ const p = require('puppeteer');
 const each = require('promise-each');
 const notifier = require('node-notifier');
 
-const { mainPage, resultsPage, propertyPage } = require('./page-elements') ;
+const { mainPage, detailedSearchPage, resultsPage, propertyPage } = require('./page-elements') ;
 const { searchedAreas } = require('./search-parameters');
 
 const setSearchDetails = require('./phases/search-details');
@@ -33,7 +33,7 @@ const iterateOnLinks = require('./phases/result-iteration');
 
       console.log(`   🔎 Setting search data for ${area}.`);
 
-      await setSearchDetails(page, mainPage, area);
+      await setSearchDetails(page, mainPage, detailedSearchPage, area);
 
       /*
         Arriving to results page

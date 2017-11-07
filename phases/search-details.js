@@ -1,56 +1,79 @@
-const { priceMin, priceMax, squaremeterMin } = require('../search-parameters');
+const { priceMin, priceMax, squaremeterMin, roomCountMin } = require('../search-parameters');
 
-module.exports = async function (page, mainPage, searchedArea) {
-  await page.type(mainPage.searchLocationInput, searchedArea, {delay: 300})
-    .then(console.log(`   ✅ Typed in: ${searchedArea}`));
+module.exports = async function (page, mainPage, detailedSearchPage, searchedArea) {
+  await page.click(mainPage.filterOptions)
+    .then(console.log(`   ✅ Clicked on filter options.`));
 
-  await page.click(mainPage.autoSuggestLocationItem)
-    .then(console.log('   ✅ Clicked on first autosuggestion.'));
+  await page.click(mainPage.moreDetailedSearch)
+    .then(console.log(`   ✅ Clicked on more detailed research. Navigating to it.`));
 
-  await page.click(mainPage.priceRanges)
-    .then(async () => {
-      console.log('   ✅ Clicked on price ranges.');
-      await page.focus(mainPage.priceRangeMin)
-        .then(console.log('   ✅ Focused on min price range.'));
-    });
+  await page.goto(('https://ingatlan.com/reszleteskereso') , { waitUntil: 'networkidle' });
 
-  await page.evaluate((mainPage, priceMin) => {
-    const inputElement = document.querySelector(mainPage.priceRangeMin);
-    inputElement.value = priceMin;
-  }, mainPage, priceMin).then(console.log('   ✅ Typed in min price.'));
+  await page.type(detailedSearchPage.priceMinInput, priceMin.toString())
+    .then(console.log(`   ✅ Typed in: ${priceMin} MFt as min price.`));
 
-  await page.keyboard.press('Tab');
+  await page.type(detailedSearchPage.priceMaxInput, priceMax.toString())
+    .then(console.log(`   ✅ Typed in: ${priceMax} MFt as max price.`));
 
-  await page.evaluate((mainPage, priceMax) => {
-    const inputElement = document.querySelector(mainPage.priceRangeMax);
-    inputElement.value = priceMax;
-  }, mainPage, priceMax).then(console.log('   ✅ Typed in max price.'));
+  await page.type(detailedSearchPage.squaremeterMinInput, squaremeterMin.toString())
+    .then(console.log(`   ✅ Typed in: ${squaremeterMin} MFt as min m2.`));
 
-  await page.click(mainPage.squaremeterRanges)
-    .then(async () => {
-      console.log('   ✅ Clicked on size ranges.');
-      await page.focus(mainPage.squaremeterRangeMin)
-        .then(console.log('   ✅ Focused on min size range.'));
-    });
+  await page.click(detailedSearchPage.capitalCityLabel)
+    .then(console.log(`   ✅ Clicked on Budapest.`));
 
-  await page.evaluate((mainPage ,squaremeterMin) => {
-    const inputElement = document.querySelector(mainPage.squaremeterRangeMin);
-    inputElement.value = squaremeterMin;
-  }, mainPage, squaremeterMin).then(console.log('   ✅ Typed in min area.'));
+  await page.click(detailedSearchPage.XIIIDistrictLabel)
+    .then(console.log(`   ✅ Clicked on XIII. kerulet.`));
 
-  await page.click(mainPage.roomCounter)
-    .then(console.log('   ✅ Clicked on room counter.'));
+  await page.type(detailedSearchPage.streetInput, searchedArea, {delay: 300})
+    .then(console.log(`   ✅ Typed in: ${searchedArea}.`));
 
-  await page.click(mainPage.twoPlusRoomsOption);
+  await page.click(detailedSearchPage.autoSuggestStreetItem)
+    .then(console.log(`   ✅ Clicked on first autosuggest item.`));
 
-  await page.screenshot({ path: 'screenshots/search-details.png' })
+  await page.click(detailedSearchPage.floorRangeMin)
+    .then(console.log(`   ✅ Clicked on minimum floor.`));
+
+  await page.click(detailedSearchPage.firstFloor)
+    .then(console.log(`   ✅ Clicked on first floor.`));
+
+  await page.click(detailedSearchPage.elevator)
+    .then(console.log(`   ✅ Clicked on elevator dropdown.`));
+
+  await page.click(detailedSearchPage.elevatorOption)
+    .then(console.log(`   ✅ Clicked on elevator option.`));
+
+  await page.type(detailedSearchPage.roomCounter, roomCountMin.toString(), {delay: 300})
+    .then(console.log(`   ✅ Typed in: ${roomCountMin} as a minimum room count.`));
+
+  await page.click(detailedSearchPage.balconyLabel)
+    .then(console.log(`   ✅ Clicked on balcony label.`));
+
+  await page.click(detailedSearchPage.innerHeight)
+    .then(console.log(`   ✅ Clicked on inner height of the property label.`));
+
+  await page.click(detailedSearchPage.toiletLabel)
+    .then(console.log(`   ✅ Clicked on toilet label.`));
+
+  await page.click(detailedSearchPage.rooftop)
+    .then(console.log(`   ✅ Clicked on rooftop label.`));
+
+  await page.click(detailedSearchPage.heatingGas)
+    .then(console.log(`   ✅ Clicked on heating label.`));
+
+  await page.click(detailedSearchPage.districtHeating)
+    .then(console.log(`   ✅ Clicked on district heating label.`));
+
+  await page.click(detailedSearchPage.districtHeatingMeasured)
+    .then(console.log(`   ✅ Clicked on district heating with measurement label.`));
+
+  await page.screenshot({ path: 'screenshots/search-details.png', fullPage: true })
     .then(console.log('   📸 Saving search details as a screenshot.'));
 
   /*
     Hitting search
   */
 
-  await page.click(mainPage.searchButton)
+  await page.click(detailedSearchPage.searchButton)
     .then(console.log('   ✅ Clicked on search button.'));
 
   console.log('➡️ Moving onto the results page.');
