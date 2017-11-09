@@ -1,7 +1,15 @@
 module.exports = {
   searchedAreas: [
+    'Gergely Győző utca XIII. kerület',
+    'Csata utca XIII. kerület',
+    'Gömb utca XIII. kerület',
+    'Thurzó utca XIII. kerület',
+    'Bessenyei utca XIII. kerület',
+    'Tutaj utca XIII. kerület',
+    'Vág utca XIII. kerület',
+    'Wein János park XIII. kerület',
+    'Gogol utca XIII. kerület',
     'Pozsonyi út XIII. kerület',
-    'Budapest XIII. kerület',
     'Hollán Ernő utca XIII. kerület',
     'Tátra utca XIII. kerület',
     'Balzac utca XIII. kerület',
