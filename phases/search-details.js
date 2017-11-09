@@ -16,7 +16,7 @@ module.exports = async function (page, mainPage, detailedSearchPage, searchedAre
     .then(console.log(`   ✅ Typed in: ${priceMax} MFt as max price.`));
 
   await page.type(detailedSearchPage.squaremeterMinInput, squaremeterMin.toString())
-    .then(console.log(`   ✅ Typed in: ${squaremeterMin} MFt as min m2.`));
+    .then(console.log(`   ✅ Typed in: ${squaremeterMin}m2 as min m2.`));
 
   await page.click(detailedSearchPage.capitalCityLabel)
     .then(console.log(`   ✅ Clicked on Budapest.`));
