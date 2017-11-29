@@ -11,7 +11,6 @@ module.exports = {
     'Tutaj utca XIII. kerület',
     'Vág utca XIII. kerület',
     'Wein János park XIII. kerület',
-    'Gogol utca XIII. kerület',
     'Pozsonyi út XIII. kerület',
     'Hollán Ernő utca XIII. kerület',
     'Tátra utca XIII. kerület',
