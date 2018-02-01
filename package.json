@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "scraper for ingatlan.com using puppeteer",
   "main": "index.js",
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,11 +25,11 @@
   },
   "homepage": "https://github.com/kristof0425/ingatlan-com-scraper#readme",
   "dependencies": {
-    "node-notifier": "^5.1.2",
-    "promise-each": "^2.2.0",
-    "puppeteer": "^0.12.0"
+    "node-notifier": "5.2.1",
+    "promise-each": "2.2.0",
+    "puppeteer": "1.0.0"
   },
   "devDependencies": {
-    "slug": "^0.9.1"
+    "slug": "0.9.1"
   }
 }
