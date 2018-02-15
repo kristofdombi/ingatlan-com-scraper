@@ -7,7 +7,7 @@ module.exports = async function (page, mainPage, detailedSearchPage, searchedAre
   await page.click(mainPage.moreDetailedSearch)
     .then(console.log(`   ✅ Clicked on more detailed research. Navigating to it.`));
 
-  await page.goto(('https://ingatlan.com/reszleteskereso') , { waitUntil: 'networkidle' });
+  await page.goto(('https://ingatlan.com/reszleteskereso') , { waitUntil: 'networkidle2' });
 
   await page.type(detailedSearchPage.priceMinInput, priceMin.toString())
     .then(console.log(`   ✅ Typed in: ${priceMin} MFt as min price.`));
